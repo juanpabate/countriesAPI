@@ -27,7 +27,9 @@ function App() {
   const getCountries = async()=>{
     let request= await fetch('https://restcountries.com/v3.1/all');
     let countries= await request.json();
-    setCountriesArray(countries);
+    let countriesOrdened= countries.sort(((a, b)=>
+      a.name.common - b.name.common));
+    setCountriesArray(countriesOrdened);
   }
 
   const filterBySearch= e=>{
