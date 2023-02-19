@@ -83,7 +83,10 @@
     margin: 25px 0;
     margin-left: 40px;
   }
-  img{
+  .country-modal img{
+    width: 300px;
+  }
+  .modalDark img{
     width: 300px;
   }
   .modal-content{

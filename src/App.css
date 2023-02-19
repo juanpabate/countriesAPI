@@ -140,6 +140,15 @@ button{
   background-color: hsl(0, 0%, 100%);
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
   color: hsl(200, 15%, 8%);
+  cursor: pointer;
+}
+.card:hover{
+  transition: all .2s ease;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.8);
+}
+.cardDark:hover{
+  transition: all .2s ease;
+  box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.8);
 }
 .cardDark{
   display: flex;
@@ -151,6 +160,7 @@ button{
   background-color: hsl(209, 23%, 22%);
   box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
   color: white;
+  cursor: pointer;
 }
 .searchDark{
   background-color: hsl(209, 23%, 22%);
