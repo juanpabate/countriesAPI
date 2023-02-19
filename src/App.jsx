@@ -3,16 +3,20 @@ import './App.css'
 import Card from './components/Card'
 import { AiOutlineSearch, AiOutlineDown } from "react-icons/ai";
 import { FaMoon, FaRegMoon } from "react-icons/fa";
+import Modal from './components/Modal';
 
 function App() {
   const [countriesArray, setCountriesArray] = useState([]);
   const [countriesToRender, setCountriesToRender]= useState([]);
+  const [countryTarget, setCountryTarget]= useState([]);
 
   const [search, setSearch]= useState('');
   const [filter, setFilter] = useState('Filter by Region');
 
   const [toggleFilter, setToggleFilter]= useState(false);
   const [toggleDark, setToggleDark]= useState(false);
+  const [toggleModal, setToggleModal]= useState(false);
+
 
 
 
@@ -27,9 +31,11 @@ function App() {
   const getCountries = async()=>{
     let request= await fetch('https://restcountries.com/v3.1/all');
     let countries= await request.json();
-    let countriesOrdened= countries.sort(((a, b)=>
+    let countriesOrdened=  await countries.sort(((a, b)=>
       a.name.common - b.name.common));
-    setCountriesArray(countriesOrdened);
+    console.log(countriesOrdened);
+    setCountriesArray(countries);
+    setCountryTarget([countries[0]]);
   }
 
   const filterBySearch= e=>{
@@ -68,6 +74,17 @@ function App() {
       setCountriesToRender(arrayFilter);
     }
   }, [filter])
+
+  const targetCountry = e =>{
+    let key= e.target.id;
+    let countryData= countriesArray.filter(country=> country.name.common == key);
+    setToggleModal(!toggleModal);
+    setCountryTarget(countryData);
+  }
+
+  const modalState = ()=>{
+    setToggleModal(!toggleModal);
+  }
   
 
   return (
@@ -76,7 +93,26 @@ function App() {
         <h1> Where in the world?</h1>
         <button onClick={darkMode} className={toggleDark ? 'buttonDark dark': 'button'}> {toggleDark ? <FaMoon /> : <FaRegMoon />} Dark Mode</button>
       </header>
-      <div className='filters-container'>
+      <div className={toggleDark ? 'modalDark': 'modal'} id={toggleModal ? 'seen': 'hidden'}>
+        {countryTarget.map(target=> <Modal
+          className= {toggleDark ? 'modalDark': 'country-modal'}
+          name= {target.name.common}
+          key= {target.name.common}
+          img= {target.flags.png}
+          alt= {target.flags.alt}
+          nativeName= {target.name.official}
+          population= {target.population}
+          region= {target.region}
+          subRegion= {target.subregion}
+          capital= {target.capital}
+          topLevelDomain= {target.tld}
+          continents= {target.continents[0]}
+          area= {target.area}
+          onClick= {modalState}/>
+        )}
+      </div>
+      <div className= 'filters-container'>
+
         <div className={toggleDark ? 'searchDark': 'search'}>
           <AiOutlineSearch />
           <input type="text" 
@@ -110,7 +146,10 @@ function App() {
           name= {country.name.common}
           population= {country.population}
           region= {country.region}
-          capital= {country.capital}/>
+          capital= {country.capital}
+          id= {country.name.common}
+          onClick= {targetCountry}
+          />
         )}
       </div>
     </div>
